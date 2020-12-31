@@ -22,7 +22,6 @@ def connection(app):
     # app.config['MYSQL_DATABASE_PASSWORD'] = config.dbpassword
     # app.config['MYSQL_DATABASE_DB'] = config.dbname
     # app.config['MYSQL_DATABASE_HOST'] = config.dbhost
-    app.config['SQLALCHEMY_DATABASE_URI '] =os.environ["DATABASE_URL"]
     cursor = connection.cursor()
     # mysql.init_app(app)
     # conn = mysql.connect()
