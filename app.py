@@ -11,10 +11,20 @@ import bs4 as bs
 import urllib.request
 import pickle
 app = Flask(__name__)
-from db import connection as conn,cursor
-
+# from db import connection as conn,cursor
+# import db
+from psycopg2 import connect
+import os
 # cursor, conn = db.connection(app)
 
+
+conn = connect(user="ytxlxwlysehdbe",
+                          password="f48ba2aec3b7f09a41bc2d0b4d48644c202b01d7fd9499a54833c0be9282bf8d",
+                          host="ec2-75-101-232-85.compute-1.amazonaws.com",
+                          port="5432",
+                          database="ddlj5rrgii4pdl"
+                          )
+cursor = conn.cursor()
 
 
 filename = 'nlp_model.pkl'
