@@ -12,6 +12,7 @@ import urllib.request
 import pickle
 
 app = Flask(__name__)
+app.secret_key = "iamkey345"
 # app.config['SECRET_KEY'] = "1a2b3c4d"
 
 # from db import connection as conn,cursor
