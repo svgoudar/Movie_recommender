@@ -10,6 +10,7 @@ import pandas as pd
 import bs4 as bs
 import urllib.request
 import pickle
+import config
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "1a2b3c4d"
 
