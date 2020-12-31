@@ -28,7 +28,7 @@
 
 </head>
 
-<body id="content" style="font-family: 'Noto Sans JP', sans-serif;" class="loggedin">
+<body id="content" style="font-family: 'Noto Sans JP', sans-serif;" class="loggedin" style="background-image: url('../static/images.jpg');">
     <nav >
 
 <!--				<h1>Movie recommender</h1>-->
@@ -46,7 +46,7 @@
 <!--    </form>-->
 
 	<div class="ml-container" style="display: block;">
-        <p style="color:#f7f907" align="center">Logged in as  {{ username }}!!</p>
+        <p style="color:#f7f907" align="center">Logged in as  {{ session['username'] }}!!</p>
 <!--		<a class="text-corner" href="{{url_for('logout')}}"  title="Logout">Logout</a>-->
 
     <center><h1 style="color:#73CCA2"> Movie Recommender with Sentimental Analysis</h1></center>

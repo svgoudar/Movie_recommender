@@ -21,6 +21,7 @@ from psycopg2 import connect
 import os
 # cursor, conn = db.connection(app)
 
+dictt = {}
 
 conn = connect(user="ytxlxwlysehdbe",
                           password="f48ba2aec3b7f09a41bc2d0b4d48644c202b01d7fd9499a54833c0be9282bf8d",
@@ -74,9 +75,11 @@ def convert_to_list(my_list):
 
 
 # @app.route("/")
-@app.route("/movierecommender",methods=["GET","POST"])
+@app.route("/movierecommender")
 def movierecommender():
     suggestions = get_suggestions()
+    # return render_template('movie_recommender_home.html', suggestions=suggestions,username=us)
+
     return render_template('movie_recommender_home.html', suggestions=suggestions)
 
 
@@ -203,9 +206,11 @@ def login():
         print(email)
         cursor.execute('''SELECT * FROM ACCOUNTS WHERE EMAIL = '%s';''' % (email))
         user = cursor.fetchone()
+
         print(user)
         app.logger.debug(user)
         # print(user[2])
+        # dictt['username'] = str(user[1])
         if user is None:
             error = 'Incorrect username.'
         elif not check_password_hash(user[2], password):
@@ -214,10 +219,21 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user[0]
+            session['username'] = user[1]
+            dictt['username'] = user[1]
             suggestions = get_suggestions()
-            return render_template('movie_recommender_home.html',suggestions=suggestions,username=user[1])
+            # usernam = user[1]
+            # return render_template('movie_recommender_home.html',suggestions=suggestions,username=dictt['username'])
+            return redirect(url_for('movierecommender'))
         flash(error)
         return render_template('login.html', title='Login')
+
+
+# @app.route("/backtohome")
+# def backtohome():
+#     suggestions = get_suggestions()
+#     return render_template('movie_recommender_home.html', suggestions=suggestions, username=session['username'])
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
