@@ -1,5 +1,5 @@
 # from flaskext.mysql import MySQL
-import config
+
 # from flask_sqlalchemy import SQLAlchemy
 from psycopg2 import connect
 import os
