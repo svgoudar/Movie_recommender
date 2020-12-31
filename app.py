@@ -10,9 +10,9 @@ import pandas as pd
 import bs4 as bs
 import urllib.request
 import pickle
-import config
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "1a2b3c4d"
+# app.config['SECRET_KEY'] = "1a2b3c4d"
 
 # from db import connection as conn,cursor
 # import db
@@ -286,9 +286,9 @@ def logout():
 
 if __name__ == '__main__':
 
-    app.debug = config.Config.DEBUG
-    app.config['SECRET_KEY'] = config.Config.SECRET_KEY
-    app.run(port=config.Config.PORT,debug=True)
+    app.debug = True
+    app.config['SECRET_KEY'] = "1a2b3c4d"
+    app.run(debug=True)
 
 
 # <a href="{{ url_for('login') }}"><i class="fas fa-home"></i>Login</a>-->
