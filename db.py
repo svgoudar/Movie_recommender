@@ -22,9 +22,9 @@ def connection(app):
     # app.config['MYSQL_DATABASE_PASSWORD'] = config.dbpassword
     # app.config['MYSQL_DATABASE_DB'] = config.dbname
     # app.config['MYSQL_DATABASE_HOST'] = config.dbhost
-    cur = conn.cursor()
+cur = conn.cursor()
     # mysql.init_app(app)
     # conn = mysql.connect()
     # cursor = conn.cursor()
     # SQLAlchemy(app)
-    return cur, conn
+return cur, conn
