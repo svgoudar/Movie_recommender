@@ -188,7 +188,7 @@ def recommend():
 # ==========================================================================================================
 
 
-@app.route("/",methods=['GET'])
+@app.route("/",methods=['POST','GET'])
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'GET':
