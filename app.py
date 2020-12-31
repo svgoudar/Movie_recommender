@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, Blueprint, flash, g, redirect, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
-import config
 from flask import Flask, render_template, request, redirect, url_for, session, flash,g,session,Blueprint
 from datetime import datetime
 from sklearn.feature_extraction.text import CountVectorizer
