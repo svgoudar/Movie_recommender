@@ -11,8 +11,9 @@ import bs4 as bs
 import urllib.request
 import pickle
 app = Flask(__name__)
+from db import connection as conn,cursor
 
-cursor, conn = db.connection(app)
+# cursor, conn = db.connection(app)
 
 
 
