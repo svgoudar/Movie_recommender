@@ -11,6 +11,8 @@ import bs4 as bs
 import urllib.request
 import pickle
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "1a2b3c4d"
+
 # from db import connection as conn,cursor
 # import db
 from psycopg2 import connect
