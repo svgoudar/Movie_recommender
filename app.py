@@ -13,7 +13,7 @@ import pickle
 
 app = Flask(__name__)
 app.secret_key = "iamkey345"
-# app.config['SECRET_KEY'] = "1a2b3c4d"
+app.config['SECRET_KEY'] = "1a2b3c4d"
 
 # from db import connection as conn,cursor
 # import db
@@ -219,7 +219,7 @@ def login():
         flash(error)
         return render_template('login.html', title='Login')
 
-@app.route('/register', methods=('GET', 'POST'))
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         if 'user_id' in session:
