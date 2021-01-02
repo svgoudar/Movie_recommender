@@ -229,8 +229,8 @@ def login():
         error = None
         # password = generate_password_hash(password)
         print(password)
-        email = request.form['email']
-        print(email)
+#         email = request.form['email']
+#         print(email)
         cursor.execute('''SELECT * FROM ACCOUNTS WHERE EMAIL = '%s' or USERNAME = '%s';''' % (useremailname,useremailname))
         user = cursor.fetchone()
 
