@@ -248,10 +248,10 @@ def login():
             session['user_id'] = user[0]
             session['username'] = user[1]
             dictt['username'] = user[1]
-            suggestions = get_suggestions()
+#             suggestions = get_suggestions()
             # usernam = user[1]
             # return render_template('movie_recommender_home.html',suggestions=suggestions,username=dictt['username'])
-            flash(f'Logged in as, {session['username']}!')
+#             flash(f'Logged in as, {session['username']}!')
             return redirect(url_for('movierecommender'))
         flash(error)
         return render_template('login.html', title='Login')
