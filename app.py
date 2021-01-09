@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, flash, g, redirect, session, url_for
+from pipenv.vendor.urllib3.exceptions import HTTPError
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 from flask import Flask, render_template, request, redirect, url_for, session, flash,g,session,Blueprint
@@ -66,17 +67,40 @@ def create_similarity():
     return data,similarity
 
 
+
+
+# def rcmd(m):
+#     m = m.lower()
+#     try:
+#         data.head()
+#         similarity.shape
+#     except:
+#         data, similarity = create_similarity()
+#     if m not in data['movie_title'].unique():
+#         return('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
+#     else:
+#         i = data.loc[data['movie_title']==m].index[0]
+#         lst = list(enumerate(similarity[i]))
+#         lst = sorted(lst, key = lambda x:x[1] ,reverse=True)
+#         lst = lst[1:11] # excluding first item since it is the requested movie itself
+#         l = []
+#         for i in range(len(lst)):
+#             a = lst[i][0]
+#             l.append(data['movie_title'][a])
+#         return l
+
 def rcmd(m):
-    global similarity, data
+    # global similarity, data
     m = m.lower()
     try:
         data.head()
         similarity.shape
     except:
         data, similarity = create_similarity()
-    if m not in data['movie_title'].unique():
+    if m not in data['movie_title']:
         return('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
-    else:
+        # return 1
+    elif m  in data['movie_title']:
         i = data.loc[data['movie_title']==m].index[0]
         lst = list(enumerate(similarity[i]))
         lst = sorted(lst, key = lambda x:x[1] ,reverse=True)
@@ -85,24 +109,10 @@ def rcmd(m):
         for i in range(len(lst)):
             a = lst[i][0]
             l.append(data['movie_title'][a])
-        return l
+    else:
+        return ('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
+    return l
 
-# converting list of string to list (eg. "["abc","def"]" to ["abc","def"])
-# def convert_to_list(my_list):
-#     my_list = my_list.split('","')
-#     my_list[0] = my_list[0].replace('["','')
-#     my_list[-1] = my_list[-1].replace('"]','')
-#     return my_list
-#
-# def convert_to_list_num(my_list):
-#     my_list = my_list.split(',')
-#     my_list[0] = my_list[0].replace("[","")
-#     my_list[-1] = my_list[-1].replace("]","")
-#     return my_list
-
-
-
-# @app.route("/")
 
 
 @app.route("/similarity", methods=["POST"])
@@ -179,9 +189,12 @@ def recommend():
                     range(len(cast_places))}
 
     # web scraping to get user reviews from IMDB site
-    sauce = urllib.request.urlopen('https://www.imdb.com/title/{}/reviews?ref_=tt_ov_rt'.format(imdb_id)).read()
-    soup = bs.BeautifulSoup(sauce, 'html.parser')
-    soup_result = soup.find_all("div", {"class": "text show-more__control"})
+    try:
+        sauce = urllib.request.urlopen('https://www.imdb.com/title/{}/reviews?ref_=tt_ov_rt'.format(imdb_id)).read()
+        soup = bs.BeautifulSoup(sauce, 'html.parser')
+        soup_result = soup.find_all("div", {"class": "text show-more__control"})
+    except  HTTPError as e:
+        return 'Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies'
 
     reviews_list = []  # list of reviews
     reviews_status = []  # list of comments (good or bad)
@@ -192,7 +205,7 @@ def recommend():
             movie_review_list = np.array([reviews.string])
             movie_vector = vectorizer.transform(movie_review_list)
             pred = clf.predict(movie_vector)
-            reviews_status.append('Positive' if pred else 'Negative')
+            reviews_status.append('Good' if pred else 'Bad')
 
     # getting current date
     movie_rel_date = ""
@@ -229,8 +242,8 @@ def login():
         error = None
         # password = generate_password_hash(password)
         print(password)
-#         email = request.form['email']
-#         print(email)
+        # email = request.form['email']
+        # print(email)
         cursor.execute('''SELECT * FROM ACCOUNTS WHERE EMAIL = '%s' or USERNAME = '%s';''' % (useremailname,useremailname))
         user = cursor.fetchone()
 
@@ -248,13 +261,32 @@ def login():
             session['user_id'] = user[0]
             session['username'] = user[1]
             dictt['username'] = user[1]
-#             suggestions = get_suggestions()
+            suggestions = get_suggestions()
             # usernam = user[1]
             # return render_template('movie_recommender_home.html',suggestions=suggestions,username=dictt['username'])
-#             flash(f'Logged in as, {session['username']}!')
             return redirect(url_for('movierecommender'))
         flash(error)
         return render_template('login.html', title='Login')
+
+@app.route("/forgot-password",methods=['POST','GET'])
+def forgot_password():
+    if request.method == 'POST':
+        username = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        cursor.execute('''SELECT * FROM ACCOUNTS WHERE EMAIL='%s' and USERNAME='%s';''' % (email,username))
+        isaccountexists = cursor.fetchone()
+        if  isaccountexists :
+            password = generate_password_hash(password)
+            cursor.execute('''UPDATE ACCOUNTS SET PASSWORD = '%s' where USERNAME = '%s';''' % (password, username))
+            conn.commit()
+            flash("Password has been set successfully! Login Now!")
+            # flash('Registration successfull!, login now!')
+            return redirect(url_for('login'))
+        else:
+            flash("Account does not exists")
+    return render_template('forgot_password.html')
+
 
 
 # @app.route("/backtohome")
