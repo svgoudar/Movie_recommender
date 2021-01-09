@@ -122,12 +122,12 @@
 
           <tbody>
 	    {% for review, status in reviews.items() if not reviews.hidden %}
-    	        <tr style="background-color:#e5091485;">
+    	        <tr style="background-color:#111122;opacity:0.9;">
                 <td>{{review}}</td>
                 <td>
                   <center>
                     {{status}} :
-                    {% if status =='Positive' %}
+                    {% if status =='Good' %}
                       &#128515;
                     {% else %}
                       &#128534;
