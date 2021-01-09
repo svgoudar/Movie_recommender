@@ -10,7 +10,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #e50914;
+  background:#2f3461;
   border-radius: 10px;
 }
 
@@ -46,7 +46,7 @@
 
 #content {
     background-image: url("../static/images.jpg");
-	background-color: #22639B;
+	background-color: #ffffff;
 	font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -86,8 +86,8 @@ h1 {
 
 .fa-arrow-up {
 	font-size: 1.5em;
-	color: #ffffff;
-    background: #e50914;
+	color: #d4f8fd;
+    background: #2f3461;
     padding: 10px;
 	border-radius: 50%;
 	float: right;
